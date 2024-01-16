@@ -7,13 +7,12 @@ on:
       - '!v*-beta*'
       - '!v*-rc*'
     paths:
-      - '.github/workflows/livery-package-release.yml'
-      - 'hdw-*-liveries/**'
-      - 'scripts/build-*-liveries.js'
-      - 'scripts/build-*-liveries.sh'
-      - '*-igniter.config.mjs'
-      - 'package.json'
-      - 'package-lock.json'
+      - '.github/workflows/a339x-livery-package-release.yml'
+      - 'hdw-a339x-liveries/**'
+      - 'scripts/build-a339x-liveries.js'
+      - 'scripts/build-a339x-liveries.sh'
+      - 'scripts/fragment-a339x-liveries.js'
+      - 'scripts/install-source-a339x-liveries.js'
 
 jobs:
   build:
