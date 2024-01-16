@@ -1,15 +1,15 @@
-name: A339X Livery Package Development
+name: SU95X Livery Package Development
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/a339x-livery-package-dev.yml'
-      - 'hdw-a339x-liveries/**'
-      - 'scripts/build-a339x-liveries.js'
-      - 'scripts/build-a339x-liveries.sh'
-      - 'scripts/fragment-a339x-liveries.js'
-      - 'scripts/install-source-a339x-liveries.js'
+      - '.github/workflows/su95x-livery-package-dev.yml'
+      - 'hdw-su95x-liveries/**'
+      - 'scripts/build-su95x-liveries.js'
+      - 'scripts/build-su95x-liveries.sh'
+      - 'scripts/fragment-su95x-liveries.js'
+      - 'scripts/install-source-su95x-liveries.js'
       - 'scripts/cdn.sh'
       - 'scripts/git_build_info.js'
       - 'scripts/setup.sh'
@@ -21,15 +21,15 @@ jobs:
   build:
     # Prevent running this on forks
     if: github.repository_owner == 'headwindsim'
-    name: 'Build A339X Livery Package'
+    name: 'Build SU95X Livery Package'
     runs-on: ubuntu-latest
     env:
       A32NX_PRODUCTION_BUILD: 1
       A32NX_INSTRUMENTS_BUILD_WORKERS: 2
-      ZIP_NAME: hdw-a339x-liveries-dev.zip
+      ZIP_NAME: hdw-su95x-liveries-dev.zip
       BUILD_DIR_NAME: dev
       CLOUDFLARE_WORKER_PASSWORD: ${{ secrets.CLOUDFLARE_WORKER_PASSWORD }}
-      CDN_BUCKET_DESTINATION: addons/a339x-livery-package/dev
+      CDN_BUCKET_DESTINATION: addons/su95x-livery-package/dev
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -61,20 +61,20 @@ jobs:
           ./scripts/dev-env/run.sh ./scripts/setup.sh --clean
       - name: Build A339X Livery Package
         run: |
-          ./scripts/dev-env/run.sh ./scripts/build-a339x-liveries.sh --no-tty -j 4
+          ./scripts/dev-env/run.sh ./scripts/build-su95x-liveries.sh --no-tty -j 4
           docker system prune -af
       - name: Build ZIP files
         run: |
-          node ./scripts/fragment-a339x-liveries.js
-          cp ./hdw-a339x-liveries/out/build-modules/modules.json ./hdw-a339x-liveries/out/headwindsim-a339x-livery-package/install.json
-          node ./scripts/install-source-a339x-liveries.js
+          node ./scripts/fragment-su95x-liveries.js
+          cp ./hdw-su95x-liveries/out/build-modules/modules.json ./hdw-su95x-liveries/out/headwindsim-su95x-livery-package/install.json
+          node ./scripts/install-source-su95x-liveries.js
           mkdir ./${{ env.BUILD_DIR_NAME }}
-          cd ./hdw-a339x-liveries/out/
-          zip -r ../../${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./headwindsim-a339x-livery-package/
+          cd ./hdw-su95x-liveries/out/
+          zip -r ../../${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./headwindsim-su95x-livery-package/
           cd ../../
       - name: Upload to CloudFlare CDN
         run: |
-          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-a339x-liveries/out/build-modules
+          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-su95x-liveries/out/build-modules
       - name: Get short SHA
         uses: benjlevesque/short-sha@v2.2
         id: short-sha
@@ -82,8 +82,8 @@ jobs:
         env:
           SHA: ${{ steps.short-sha.outputs.sha }}
         run: |
-          mkdir -p ./hdw-a339x-liveries/out/config
-          echo "releases:" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          echo "  - name: $SHA" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          echo "    date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-a339x-liveries/out/config
+          mkdir -p ./hdw-su95x-liveries/out/config
+          echo "releases:" >> ./hdw-su95x-liveries/out/config/releases.yaml
+          echo "  - name: $SHA" >> ./hdw-su95x-liveries/out/config/releases.yaml
+          echo "    date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> ./hdw-su95x-liveries/out/config/releases.yaml
+          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-su95x-liveries/out/config

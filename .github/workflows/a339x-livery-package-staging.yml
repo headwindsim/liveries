@@ -1,10 +1,12 @@
-name: A339X Livery Package Development
+name: A339X Livery Package Staging
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*-alpha*'
+      - 'v*-beta*'
+      - 'v*-rc*'
     paths:
-      - '.github/workflows/a339x-livery-package-dev.yml'
+      - '.github/workflows/a339x-livery-package-staging.yml'
       - 'hdw-a339x-liveries/**'
       - 'scripts/build-a339x-liveries.js'
       - 'scripts/build-a339x-liveries.sh'
@@ -26,10 +28,10 @@ jobs:
     env:
       A32NX_PRODUCTION_BUILD: 1
       A32NX_INSTRUMENTS_BUILD_WORKERS: 2
-      ZIP_NAME: hdw-a339x-liveries-dev.zip
-      BUILD_DIR_NAME: dev
+      ZIP_NAME: hdw-a339x-liveries-staging.zip
+      BUILD_DIR_NAME: staging
       CLOUDFLARE_WORKER_PASSWORD: ${{ secrets.CLOUDFLARE_WORKER_PASSWORD }}
-      CDN_BUCKET_DESTINATION: addons/a339x-livery-package/dev
+      CDN_BUCKET_DESTINATION: addons/a339x-livery-package/staging
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
