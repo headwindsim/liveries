@@ -56,9 +56,6 @@ jobs:
       - name: Setup Package
         run: |
           ./scripts/dev-env/run.sh ./scripts/setup.sh --clean
-      - name: Copy Sources
-        run: |
-          ./scripts/dev-env/run.sh ./scripts/copy_su95x.sh
       - name: Build A339X Livery Package
         run: |
           ./scripts/dev-env/run.sh ./scripts/build-su95x-liveries.sh --no-tty -j 4
