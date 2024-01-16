@@ -1,0 +1,42 @@
+# general exclusions
+.DS_Store
+
+# exclude changes to root directory
+*
+/.*/
+
+# Explicit inclusions
+!*/
+!/.github/**
+!/.vscode/**
+
+!.editorconfig
+!.eslintrc
+!.gitattributes
+!.gitignore
+!.npmrc
+!.prettierignore
+!.prettierrc.json
+
+!igniter.config.mjs
+!a333x-igniter.config.mjs
+!jsconfig.json
+
+!hdw-a339x-liveries/src/base/manifest-base.json
+!package.json
+
+/hdw-a339x-liveries/*
+!/hdw-a339x-liveries/src/
+!/hdw-a339x-liveries/src/**
+
+!/scripts/**
+
+!/build-utils.js
+
+# explicit exclusions
+/.env
+node_modules/
+obj/
+target/
+*.tgz
+*.wasm
