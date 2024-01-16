@@ -24,6 +24,7 @@
 
 !hdw-a339x-liveries/src/base/manifest-base.json
 !package.json
+!package-lock.json
 
 /hdw-a339x-liveries/*
 !/hdw-a339x-liveries/src/
