@@ -28,18 +28,17 @@ jobs:
       CLOUDFLARE_WORKER_PASSWORD: ${{ secrets.CLOUDFLARE_WORKER_PASSWORD }}
       CDN_BUCKET_DESTINATION: addons/a339x-livery-package/release
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v4.1
         with:
-          tool-cache: false
-          android: true
-          dotnet: false
-          haskell: false
-          large-packages: false
-          docker-images: false
-          swap-storage: false
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Set BUILT_DATE_TIME
@@ -72,10 +71,3 @@ jobs:
       - name: Upload to CloudFlare CDN
         run: |
           ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-a339x-liveries/out/build-modules
-      - name: Upload Release Config to CloudFlare CDN
-        run: |
-          mkdir -p ./hdw-a339x-liveries/out/config
-          echo "releases:" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          echo "  - name: $GITHUB_REF_NAME" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          echo "    date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> ./hdw-a339x-liveries/out/config/releases.yaml
-          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hdw-a339x-liveries/out/config

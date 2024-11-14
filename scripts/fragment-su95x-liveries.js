@@ -5,6 +5,7 @@ const execute = async () => {
     try {
         const result = await fragmenter.pack({
             packOptions: { splitFileSize: 102_760_448, keepCompleteModulesAfterSplit: false },
+            version: require('./fragmenter_version').version,
             baseDir: './hdw-su95x-liveries/out/headwindsim-su95x-livery-package',
             outDir: './hdw-su95x-liveries/out/build-modules',
             modules: [{
