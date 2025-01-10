@@ -1,6 +1,6 @@
 {
   "name": "headwind-livery-packages",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "edition": "development",
   "imports": {
     "#build-utils": "./build-utils.js"

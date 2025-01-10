@@ -41,6 +41,9 @@ const execute = async () => {
                 sourceDir: './SimObjects/Airplanes/Headwind_A330neo_TAP_STAR'
             }, {
                 name: 'Livery_XMAS',
+                sourceDir: './SimObjects/Airplanes/Headwind_A330neo_Malaysia_Airlines'
+            }, {
+                name: 'Livery_XMAS',
                 sourceDir: './SimObjects/Airplanes/_Headwind_A330neo-Livery_XMAS'
             }]
         });
