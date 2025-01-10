@@ -40,7 +40,7 @@ const execute = async () => {
                 name: 'TAPStar',
                 sourceDir: './SimObjects/Airplanes/Headwind_A330neo_TAP_STAR'
             }, {
-                name: 'Livery_XMAS',
+                name: 'Malaysia_Airlines',
                 sourceDir: './SimObjects/Airplanes/Headwind_A330neo_Malaysia_Airlines'
             }, {
                 name: 'Livery_XMAS',
