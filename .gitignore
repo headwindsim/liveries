@@ -33,6 +33,10 @@
 !/hdw-su95x-liveries/src/
 !/hdw-su95x-liveries/src/**
 
+/hues-a339x-dal/*
+!/hues-a339x-dal/src/
+!/hues-a339x-dal/src/**
+
 !/scripts/**
 
 !/build-utils.js
