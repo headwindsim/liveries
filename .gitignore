@@ -37,6 +37,10 @@
 !/hues-a339x-dal/src/
 !/hues-a339x-dal/src/**
 
+/hues-a339x-vir/*
+!/hues-a339x-vir/src/
+!/hues-a339x-vir/src/**
+
 !/scripts/**
 
 !/build-utils.js
