@@ -1,4 +1,4 @@
-name: Hues A339X DAL Livery Package Development
+name: Hues A339X DAL Livery Package Release
 on:
   push:
     tags:

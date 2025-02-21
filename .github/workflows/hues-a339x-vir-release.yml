@@ -1,4 +1,4 @@
-name: Hues A339X VIR Livery Package Development
+name: Hues A339X VIR Livery Package Release
 on:
   push:
     tags:
