@@ -41,6 +41,10 @@
 !/hues-a339x-vir/src/
 !/hues-a339x-vir/src/**
 
+/hues-a339x-vkg/*
+!/hues-a339x-vkg/src/
+!/hues-a339x-vkg/src/**
+
 !/scripts/**
 
 !/build-utils.js
