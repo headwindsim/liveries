@@ -1,0 +1,122 @@
+name: Hues A339X CFG Livery Package Release
+on:
+  push:
+    tags:
+      - 'hues-a339x-cfg-v*.*.*'
+      - '!hues-a339x-cfg-v*.*.*-alpha*'
+      - '!hues-a339x-cfg-v*.*.*-beta*'
+      - '!hues-a339x-cfg-v*.*.*-rc*'
+
+jobs:
+  build_hues_a339x_cfg_4k:
+    # Prevent running this on forks
+    if: github.repository_owner == 'headwindsim'
+    name: 'Build HUES A339X CFG 4K Livery Package'
+    runs-on: ubuntu-latest
+    env:
+      A32NX_PRODUCTION_BUILD: 1
+      A32NX_INSTRUMENTS_BUILD_WORKERS: 2
+      ZIP_NAME: hues-livery-a339x-condor-package-4k-release.zip
+      BUILD_DIR_NAME: release
+      CLOUDFLARE_WORKER_PASSWORD: ${{ secrets.CLOUDFLARE_WORKER_PASSWORD }}
+      CDN_BUCKET_DESTINATION: addons/hues-livery-a339x-condor-package-4k/release
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v4.1
+        with:
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set BUILT_DATE_TIME
+        run: echo "BUILT_DATE_TIME=$(date -u -Iseconds)" >> $GITHUB_ENV
+      - name: Create .env file
+        run: |
+          echo A32NX_PRODUCTION_BUILD=1 >> .env
+          echo CLIENT_ID=${{ secrets.NAVIGRAPH_CLIENT_ID }} >> .env
+          echo CLIENT_SECRET=${{ secrets.NAVIGRAPH_CLIENT_SECRET }} >> .env
+          echo CHARTFOX_SECRET=${{ secrets.CHARTFOX_SECRET }} >> .env
+          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env
+          echo BUILD_DIR_NAME=${{ env.BUILD_DIR_NAME }} >> .env
+          echo LOCALAZY_READ_KEY=${{ secrets.LOCALAZY_READ_KEY }} >> .env
+      - name: Setup Package
+        run: |
+          ./scripts/dev-env/run.sh ./scripts/setup.sh --clean
+      - name: Build Livery Package
+        run: |
+          ./scripts/dev-env/run.sh ./scripts/build-hues-a339x-cfg.sh --no-tty -j 4 -4k
+          docker system prune -af
+      - name: Build ZIP files
+        run: |
+          node ./scripts/fragment-hues-a339x-cfg.js
+          cp ./hues-a339x-cfg/out/build-modules/modules.json ./hues-a339x-cfg/out/hues-livery-a339x-condor-package/install.json
+          node ./scripts/install-source-hues-a339x-cfg.js
+          mkdir ./${{ env.BUILD_DIR_NAME }}
+          cd ./hues-a339x-cfg/out/
+          zip -r ../../${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./hues-livery-a339x-condor-package/
+          cd ../../
+      - name: Upload to CloudFlare CDN
+        run: |
+          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hues-a339x-cfg/out/build-modules
+  build_hues_a339x_cfg_8k:
+    # Prevent running this on forks
+    if: github.repository_owner == 'headwindsim'
+    name: 'Build HUES A339X CFG 8K Livery Package'
+    runs-on: ubuntu-latest
+    env:
+      A32NX_PRODUCTION_BUILD: 1
+      A32NX_INSTRUMENTS_BUILD_WORKERS: 2
+      ZIP_NAME: hues-livery-a339x-condor-package-8k-release.zip
+      BUILD_DIR_NAME: release
+      CLOUDFLARE_WORKER_PASSWORD: ${{ secrets.CLOUDFLARE_WORKER_PASSWORD }}
+      CDN_BUCKET_DESTINATION: addons/hues-livery-a339x-condor-package-8k/release
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v4.1
+        with:
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set BUILT_DATE_TIME
+        run: echo "BUILT_DATE_TIME=$(date -u -Iseconds)" >> $GITHUB_ENV
+      - name: Create .env file
+        run: |
+          echo A32NX_PRODUCTION_BUILD=1 >> .env
+          echo CLIENT_ID=${{ secrets.NAVIGRAPH_CLIENT_ID }} >> .env
+          echo CLIENT_SECRET=${{ secrets.NAVIGRAPH_CLIENT_SECRET }} >> .env
+          echo CHARTFOX_SECRET=${{ secrets.CHARTFOX_SECRET }} >> .env
+          echo SENTRY_DSN=${{ secrets.SENTRY_DSN }} >> .env
+          echo BUILD_DIR_NAME=${{ env.BUILD_DIR_NAME }} >> .env
+          echo LOCALAZY_READ_KEY=${{ secrets.LOCALAZY_READ_KEY }} >> .env
+      - name: Setup Package
+        run: |
+          ./scripts/dev-env/run.sh ./scripts/setup.sh --clean
+      - name: Build Livery Package
+        run: |
+          ./scripts/dev-env/run.sh ./scripts/build-hues-a339x-cfg.sh --no-tty -j 4
+          docker system prune -af
+      - name: Build ZIP files
+        run: |
+          node ./scripts/fragment-hues-a339x-cfg.js
+          cp ./hues-a339x-cfg/out/build-modules/modules.json ./hues-a339x-cfg/out/hues-livery-a339x-condor-package/install.json
+          node ./scripts/install-source-hues-a339x-cfg.js
+          mkdir ./${{ env.BUILD_DIR_NAME }}
+          cd ./hues-a339x-cfg/out/
+          zip -r ../../${{ env.BUILD_DIR_NAME }}/${{ env.ZIP_NAME }} ./hues-livery-a339x-condor-package/
+          cd ../../
+      - name: Upload to CloudFlare CDN
+        run: |
+          ./scripts/cdn.sh $CDN_BUCKET_DESTINATION ./hues-a339x-cfg/out/build-modules
